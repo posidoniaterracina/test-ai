@@ -3,82 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qual è la tua Professione del Futuro?</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>Future Career Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#141e30,#243b55);
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:'Poppins',sans-serif;
+background:radial-gradient(circle at top,#0f2027,#203a43,#2c5364);
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
 }
 
 .container{
-  width:90%;
-  max-width:700px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(15px);
-  padding:40px;
-  border-radius:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
-  text-align:center;
+width:95%;
+max-width:750px;
+background:rgba(255,255,255,0.07);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:40px;
+box-shadow:0 0 40px rgba(0,255,255,0.2);
+position:relative;
+animation:fadeIn 1s ease;
 }
 
-h1{margin-bottom:20px;}
-
-.question{
-  font-size:20px;
-  margin-bottom:20px;
-}
-
-.option{
-  display:block;
-  background:rgba(255,255,255,0.15);
-  margin:10px 0;
-  padding:12px;
-  border-radius:12px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.option:hover{
-  background:rgba(255,255,255,0.35);
-}
-
-button{
-  margin-top:20px;
-  padding:10px 25px;
-  border:none;
-  border-radius:30px;
-  background:#00f5d4;
-  font-weight:600;
-  cursor:pointer;
-  display:none;
+h1{
+font-family:'Orbitron',sans-serif;
+text-align:center;
+margin-bottom:20px;
+font-size:28px;
+background:linear-gradient(90deg,#00f5d4,#00bbf9);
+-webkit-background-clip:text;
+color:transparent;
 }
 
 .progress{
-  height:6px;
-  background:rgba(255,255,255,0.2);
-  border-radius:5px;
-  margin-bottom:20px;
-  overflow:hidden;
+height:6px;
+background:rgba(255,255,255,0.15);
+border-radius:5px;
+overflow:hidden;
+margin-bottom:25px;
 }
 
 .progress-bar{
-  height:100%;
-  width:0%;
-  background:#00f5d4;
-  transition:0.3s;
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00f5d4,#00bbf9);
+transition:0.4s;
+}
+
+.question{
+font-size:20px;
+margin-bottom:20px;
+animation:slide 0.5s ease;
+}
+
+.option{
+display:block;
+margin:10px 0;
+padding:12px;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
+cursor:pointer;
+transition:0.3s;
+border:1px solid transparent;
+}
+
+.option:hover{
+transform:scale(1.05);
+background:rgba(0,255,255,0.2);
+border:1px solid #00f5d4;
+}
+
+button{
+margin-top:20px;
+padding:10px 30px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00f5d4,#00bbf9);
+font-weight:600;
+cursor:pointer;
+display:none;
 }
 
 .result{
-  font-size:22px;
-  margin-top:20px;
+text-align:center;
+margin-top:20px;
+font-size:22px;
+animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes slide{
+from{opacity:0;transform:translateX(-10px)}
+to{opacity:1;transform:translateX(0)}
 }
 </style>
 </head>
@@ -86,44 +113,53 @@ button{
 <body>
 
 <div class="container">
-  <h1>Scopri la tua Professione del Futuro</h1>
+<h1>Scopri la tua Professione del Futuro</h1>
 
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
 
-  <div id="quiz"></div>
-  <button id="nextBtn">Avanti</button>
-  <div id="result" class="result"></div>
+<div id="quiz"></div>
+<button id="nextBtn">Avanti</button>
+<div id="result" class="result"></div>
 </div>
 
 <script>
 const quizData=[
 {
-question:"Quando affronti un problema:",
+question:"Quale scenario ti rappresenta di più?",
 options:[
-{text:"Cerchi la soluzione logica",type:"tech"},
-{text:"Cerchi un’idea originale",type:"creative"},
-{text:"Valuti l’impatto ambientale",type:"green"},
-{text:"Analizzi opportunità economiche",type:"business"}
+{text:"Laboratorio AI futuristico 🤖",type:"tech"},
+{text:"Studio creativo digitale 🎨",type:"creative"},
+{text:"Centro innovazione green 🌱",type:"green"},
+{text:"Hub startup internazionale 💼",type:"business"}
 ]
 },
 {
-question:"Ti entusiasma di più:",
+question:"Se dovessi creare qualcosa sarebbe:",
 options:[
-{text:"Intelligenza Artificiale",type:"tech"},
-{text:"Contenuti digitali",type:"creative"},
-{text:"Energie rinnovabili",type:"green"},
-{text:"Startup innovative",type:"business"}
+{text:"Un algoritmo intelligente",type:"tech"},
+{text:"Un brand digitale virale",type:"creative"},
+{text:"Una soluzione sostenibile",type:"green"},
+{text:"Un modello di business scalabile",type:"business"}
 ]
 },
 {
-question:"Preferisci lavorare:",
+question:"La tua forza principale è:",
 options:[
-{text:"Con dati e software",type:"tech"},
-{text:"Con design e media",type:"creative"},
-{text:"In progetti sostenibili",type:"green"},
-{text:"Con strategie di mercato",type:"business"}
+{text:"Logica e analisi",type:"tech"},
+{text:"Creatività e visione",type:"creative"},
+{text:"Responsabilità ambientale",type:"green"},
+{text:"Leadership e strategia",type:"business"}
+]
+},
+{
+question:"Ti immagini nel 2035 mentre:",
+options:[
+{text:"Sviluppi AI avanzate",type:"tech"},
+{text:"Dirigi progetti multimediali",type:"creative"},
+{text:"Guidi la transizione ecologica",type:"green"},
+{text:"Lanci la tua azienda globale",type:"business"}
 ]
 }
 ];
@@ -165,15 +201,14 @@ progressBar.style.width="100%";
 let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
 
 const results={
-tech:"🚀 AI Specialist / Data Scientist",
-creative:"🎨 Creative Technologist",
-green:"🌱 Sustainability Manager",
-business:"💼 Innovation Manager"
+tech:"🚀 AI Architect & Future Data Scientist",
+creative:"🎨 Creative Technologist & Digital Visionary",
+green:"🌱 Sustainability Innovation Leader",
+business:"💼 Startup Founder & Innovation Manager"
 };
 
-result.innerHTML="La tua professione del futuro è:<br><br><strong>"+results[top]+"</strong>";
+result.innerHTML="La tua professione del futuro è:<br><br><strong>"+results[top]+"</strong><br><br>Condividi il risultato e preparati al 2035.";
 }
-
 loadQuestion();
 </script>
 
