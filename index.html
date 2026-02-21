@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Future Career Test</title>
+<title>AI & Lavoro - Test Finale SIA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 body{
 font-family:'Poppins',sans-serif;
 background:radial-gradient(circle at top,#0f2027,#203a43,#2c5364);
@@ -16,32 +15,26 @@ color:#fff;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-overflow:hidden;
+min-height:100vh;
+padding:20px;
 }
-
 .container{
-width:95%;
-max-width:750px;
+width:100%;
+max-width:900px;
 background:rgba(255,255,255,0.07);
 backdrop-filter:blur(20px);
 border-radius:25px;
 padding:40px;
 box-shadow:0 0 40px rgba(0,255,255,0.2);
-position:relative;
-animation:fadeIn 1s ease;
 }
-
 h1{
 font-family:'Orbitron',sans-serif;
 text-align:center;
 margin-bottom:20px;
-font-size:28px;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
 -webkit-background-clip:text;
 color:transparent;
 }
-
 .progress{
 height:6px;
 background:rgba(255,255,255,0.15);
@@ -49,37 +42,14 @@ border-radius:5px;
 overflow:hidden;
 margin-bottom:25px;
 }
-
 .progress-bar{
 height:100%;
 width:0%;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
-transition:0.4s;
-}
-
-.question{
-font-size:20px;
-margin-bottom:20px;
-animation:slide 0.5s ease;
-}
-
-.option{
-display:block;
-margin:10px 0;
-padding:12px;
-border-radius:12px;
-background:rgba(255,255,255,0.1);
-cursor:pointer;
 transition:0.3s;
-border:1px solid transparent;
 }
-
-.option:hover{
-transform:scale(1.05);
-background:rgba(0,255,255,0.2);
-border:1px solid #00f5d4;
-}
-
+.question{margin-bottom:20px;font-size:18px}
+.option{display:block;margin:8px 0}
 button{
 margin-top:20px;
 padding:10px 30px;
@@ -88,32 +58,14 @@ border-radius:30px;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
 font-weight:600;
 cursor:pointer;
-display:none;
 }
-
-.result{
-text-align:center;
-margin-top:20px;
-font-size:22px;
-animation:fadeIn 1s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes slide{
-from{opacity:0;transform:translateX(-10px)}
-to{opacity:1;transform:translateX(0)}
-}
+.result{margin-top:25px;font-size:20px;text-align:center}
 </style>
 </head>
 
 <body>
-
 <div class="container">
-<h1>Scopri la tua Professione del Futuro</h1>
+<h1>Test AI nel Mondo del Lavoro - SIA</h1>
 
 <div class="progress">
 <div class="progress-bar" id="progressBar"></div>
@@ -125,47 +77,40 @@ to{opacity:1;transform:translateX(0)}
 </div>
 
 <script>
-const quizData=[
-{
-question:"Quale scenario ti rappresenta di più?",
-options:[
-{text:"Laboratorio AI futuristico 🤖",type:"tech"},
-{text:"Studio creativo digitale 🎨",type:"creative"},
-{text:"Centro innovazione green 🌱",type:"green"},
-{text:"Hub startup internazionale 💼",type:"business"}
-]
-},
-{
-question:"Se dovessi creare qualcosa sarebbe:",
-options:[
-{text:"Un algoritmo intelligente",type:"tech"},
-{text:"Un brand digitale virale",type:"creative"},
-{text:"Una soluzione sostenibile",type:"green"},
-{text:"Un modello di business scalabile",type:"business"}
-]
-},
-{
-question:"La tua forza principale è:",
-options:[
-{text:"Logica e analisi",type:"tech"},
-{text:"Creatività e visione",type:"creative"},
-{text:"Responsabilità ambientale",type:"green"},
-{text:"Leadership e strategia",type:"business"}
-]
-},
-{
-question:"Ti immagini nel 2035 mentre:",
-options:[
-{text:"Sviluppi AI avanzate",type:"tech"},
-{text:"Dirigi progetti multimediali",type:"creative"},
-{text:"Guidi la transizione ecologica",type:"green"},
-{text:"Lanci la tua azienda globale",type:"business"}
-]
-}
+
+const topics = [
+"L’AI è un supporto alle decisioni",
+"AI nel marketing predittivo",
+"Algoritmi e modelli statistici",
+"Test di Turing",
+"Machine learning e apprendimento autonomo",
+"Personalizzazione contenuti",
+"Bias e allucinazioni",
+"Creatività vs algoritmo",
+"Controllo di gestione con AI",
+"Sistemi informativi aziendali"
 ];
 
+function generateQuestions(){
+let arr=[];
+for(let i=1;i<=100;i++){
+let t = topics[i % topics.length];
+arr.push({
+question:`Domanda ${i}: Quali affermazioni sono corrette riguardo ${t}?`,
+options:[
+{text:"È uno strumento di supporto alle decisioni",correct:true},
+{text:"Sostituisce completamente l’uomo",correct:false},
+{text:"Si basa su dati e modelli statistici",correct:true},
+{text:"Funziona per magia",correct:false}
+]
+});
+}
+return arr;
+}
+
+const quizData = generateQuestions();
 let current=0;
-let scores={tech:0,creative:0,green:0,business:0};
+let score=0;
 
 const quiz=document.getElementById("quiz");
 const nextBtn=document.getElementById("nextBtn");
@@ -174,19 +119,23 @@ const progressBar=document.getElementById("progressBar");
 
 function loadQuestion(){
 let q=quizData[current];
-quiz.innerHTML=`<div class="question">${q.question}</div>
-${q.options.map(opt=>`<div class="option" onclick="selectOption('${opt.type}')">${opt.text}</div>`).join("")}`;
+quiz.innerHTML=`<div class="question">${q.question}</div>`+
+q.options.map((opt,i)=>
+`<label class="option">
+<input type="checkbox" value="${i}"> ${opt.text}
+</label>`
+).join("");
 progressBar.style.width=((current/quizData.length)*100)+"%";
 }
 
-function selectOption(type){
-scores[type]++;
-nextBtn.style.display="inline-block";
-}
-
 nextBtn.onclick=function(){
+let checkboxes=quiz.querySelectorAll("input[type=checkbox]");
+let q=quizData[current];
+checkboxes.forEach((box,i)=>{
+if(box.checked && q.options[i].correct) score++;
+if(box.checked && !q.options[i].correct) score--;
+});
 current++;
-nextBtn.style.display="none";
 if(current<quizData.length){
 loadQuestion();
 }else{
@@ -196,19 +145,29 @@ showResult();
 
 function showResult(){
 quiz.innerHTML="";
+nextBtn.style.display="none";
 progressBar.style.width="100%";
 
-let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+let maxScore = quizData.length * 2;
+let percent = Math.round((score/maxScore)*100);
 
-const results={
-tech:"🚀 AI Architect & Future Data Scientist",
-creative:"🎨 Creative Technologist & Digital Visionary",
-green:"🌱 Sustainability Innovation Leader",
-business:"💼 Startup Founder & Innovation Manager"
-};
-
-result.innerHTML="La tua professione del futuro è:<br><br><strong>"+results[top]+"</strong><br><br>Condividi il risultato e preparati al 2035.";
+let comment="";
+if(percent>=85){
+comment="🚀 Sei un vero AI Strategist! Approccio critico, consapevole e maturo. Uno studente SIA pronto per il futuro digitale.";
+}else if(percent>=60){
+comment="💡 Buona preparazione! Hai capito che l’AI è uno strumento potente, ma serve sempre spirito critico.";
+}else if(percent>=40){
+comment="🤖 Attenzione! Stai usando l’AI… ma forse l’AI sta usando te 😉 Ripassa bias, etica e verifica delle fonti.";
+}else{
+comment="📚 Serve un ripasso serio! L’AI non è magia… è matematica. Torna alle lezioni e riprova!";
 }
+
+result.innerHTML=`
+Risultato finale: <strong>${percent}%</strong><br><br>
+${comment}
+`;
+}
+
 loadQuestion();
 </script>
 
