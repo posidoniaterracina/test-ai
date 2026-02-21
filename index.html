@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI & Lavoro - Test Finale SIA</title>
+<title>AI & Lavoro - Mega Test SIA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -26,10 +26,10 @@ backdrop-filter:blur(20px);
 border-radius:25px;
 padding:40px;
 box-shadow:0 0 40px rgba(0,255,255,0.2);
+text-align:center;
 }
 h1{
 font-family:'Orbitron',sans-serif;
-text-align:center;
 margin-bottom:20px;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
 -webkit-background-clip:text;
@@ -48,64 +48,78 @@ width:0%;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
 transition:0.3s;
 }
-.question{margin-bottom:20px;font-size:18px}
-.option{display:block;margin:8px 0}
-button{
-margin-top:20px;
-padding:10px 30px;
-border:none;
-border-radius:30px;
-background:linear-gradient(90deg,#00f5d4,#00bbf9);
-font-weight:600;
-cursor:pointer;
+.question{
+font-size:20px;
+margin-bottom:25px;
+min-height:60px;
 }
-.result{margin-top:25px;font-size:20px;text-align:center}
+.option{
+margin:10px 0;
+padding:14px;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
+cursor:pointer;
+transition:0.3s;
+}
+.option:hover{
+background:rgba(0,255,255,0.2);
+transform:scale(1.05);
+}
+.result{
+margin-top:30px;
+font-size:22px;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>Test AI nel Mondo del Lavoro - SIA</h1>
+<h1>AI nel Mondo del Lavoro - Test Definitivo SIA</h1>
 
 <div class="progress">
 <div class="progress-bar" id="progressBar"></div>
 </div>
 
 <div id="quiz"></div>
-<button id="nextBtn">Avanti</button>
 <div id="result" class="result"></div>
 </div>
 
 <script>
 
-const topics = [
-"L’AI è un supporto alle decisioni",
-"AI nel marketing predittivo",
-"Algoritmi e modelli statistici",
-"Test di Turing",
-"Machine learning e apprendimento autonomo",
-"Personalizzazione contenuti",
-"Bias e allucinazioni",
-"Creatività vs algoritmo",
-"Controllo di gestione con AI",
-"Sistemi informativi aziendali"
+const seriousOptions = [
+"È uno strumento di supporto alle decisioni",
+"Si basa su dati e modelli statistici",
+"Può analizzare grandi quantità di dati",
+"Personalizza contenuti e prevede comportamenti"
+];
+
+const funnyOptions = [
+"Sostituisce il prof quando interroga",
+"Funziona grazie alla magia di Hogwarts",
+"Legge la mente durante le verifiche",
+"Decide i voti in base all’umore del lunedì",
+"È alimentata a pizzette della macchinetta",
+"Risponde solo se la chiami 'Oh potente algoritmo'"
 ];
 
 function generateQuestions(){
 let arr=[];
 for(let i=1;i<=100;i++){
-let t = topics[i % topics.length];
 arr.push({
-question:`Domanda ${i}: Quali affermazioni sono corrette riguardo ${t}?`,
-options:[
-{text:"È uno strumento di supporto alle decisioni",correct:true},
-{text:"Sostituisce completamente l’uomo",correct:false},
-{text:"Si basa su dati e modelli statistici",correct:true},
-{text:"Funziona per magia",correct:false}
-]
+question:`Domanda ${i}: L’AI nel mondo del lavoro è davvero...`,
+options:shuffle([
+{ text: seriousOptions[i%seriousOptions.length], correct:true },
+{ text: seriousOptions[(i+1)%seriousOptions.length], correct:true },
+{ text: funnyOptions[i%funnyOptions.length], correct:false },
+{ text: funnyOptions[(i+2)%funnyOptions.length], correct:false }
+])
 });
 }
 return arr;
+}
+
+function shuffle(array){
+return array.sort(()=>Math.random()-0.5);
 }
 
 const quizData = generateQuestions();
@@ -113,7 +127,6 @@ let current=0;
 let score=0;
 
 const quiz=document.getElementById("quiz");
-const nextBtn=document.getElementById("nextBtn");
 const result=document.getElementById("result");
 const progressBar=document.getElementById("progressBar");
 
@@ -121,20 +134,14 @@ function loadQuestion(){
 let q=quizData[current];
 quiz.innerHTML=`<div class="question">${q.question}</div>`+
 q.options.map((opt,i)=>
-`<label class="option">
-<input type="checkbox" value="${i}"> ${opt.text}
-</label>`
+`<div class="option" onclick="selectOption(${i})">${opt.text}</div>`
 ).join("");
 progressBar.style.width=((current/quizData.length)*100)+"%";
 }
 
-nextBtn.onclick=function(){
-let checkboxes=quiz.querySelectorAll("input[type=checkbox]");
+function selectOption(index){
 let q=quizData[current];
-checkboxes.forEach((box,i)=>{
-if(box.checked && q.options[i].correct) score++;
-if(box.checked && !q.options[i].correct) score--;
-});
+if(q.options[index].correct) score++;
 current++;
 if(current<quizData.length){
 loadQuestion();
@@ -145,31 +152,26 @@ showResult();
 
 function showResult(){
 quiz.innerHTML="";
-nextBtn.style.display="none";
 progressBar.style.width="100%";
 
-let maxScore = quizData.length * 2;
-let percent = Math.round((score/maxScore)*100);
+let percent=Math.round((score/quizData.length)*100);
 
 let comment="";
 if(percent>=85){
-comment="🚀 Sei un vero AI Strategist! Approccio critico, consapevole e maturo. Uno studente SIA pronto per il futuro digitale.";
+comment="🚀 Complimenti! Sei pronto a spiegare l’AI anche ai professori. Probabilmente correggerai tu le verifiche digitali.";
 }else if(percent>=60){
-comment="💡 Buona preparazione! Hai capito che l’AI è uno strumento potente, ma serve sempre spirito critico.";
+comment="💡 Buona preparazione! Hai capito che l’AI è matematica, non magia (anche se qualcuno sperava nel contrario).";
 }else if(percent>=40){
-comment="🤖 Attenzione! Stai usando l’AI… ma forse l’AI sta usando te 😉 Ripassa bias, etica e verifica delle fonti.";
+comment="🤖 Attenzione… forse pensavi davvero che l’AI decidesse i voti del lunedì 😅 Ripassino consigliato!";
 }else{
-comment="📚 Serve un ripasso serio! L’AI non è magia… è matematica. Torna alle lezioni e riprova!";
+comment="📚 Forse hai cliccato le risposte divertenti apposta… oppure l’algoritmo ti ha sabotato. Riprova!";
 }
 
-result.innerHTML=`
-Risultato finale: <strong>${percent}%</strong><br><br>
-${comment}
-`;
+result.innerHTML=`Risultato finale: <strong>${percent}%</strong><br><br>${comment}`;
 }
 
 loadQuestion();
-</script>
 
+</script>
 </body>
 </html>
