@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI & Lavoro - Mega Test SIA</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>AI nel Lavoro - Test SIA Evoluto</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -30,7 +30,7 @@ text-align:center;
 }
 h1{
 font-family:'Orbitron',sans-serif;
-margin-bottom:20px;
+margin-bottom:25px;
 background:linear-gradient(90deg,#00f5d4,#00bbf9);
 -webkit-background-clip:text;
 color:transparent;
@@ -40,7 +40,7 @@ height:6px;
 background:rgba(255,255,255,0.15);
 border-radius:5px;
 overflow:hidden;
-margin-bottom:25px;
+margin-bottom:30px;
 }
 .progress-bar{
 height:100%;
@@ -74,7 +74,7 @@ font-size:22px;
 
 <body>
 <div class="container">
-<h1>AI nel Mondo del Lavoro - Test Definitivo SIA</h1>
+<h1>AI nel Mondo del Lavoro - Test SIA</h1>
 
 <div class="progress">
 <div class="progress-bar" id="progressBar"></div>
@@ -86,32 +86,90 @@ font-size:22px;
 
 <script>
 
-const seriousOptions = [
-"È uno strumento di supporto alle decisioni",
-"Si basa su dati e modelli statistici",
-"Può analizzare grandi quantità di dati",
-"Personalizza contenuti e prevede comportamenti"
-];
-
-const funnyOptions = [
-"Sostituisce il prof quando interroga",
-"Funziona grazie alla magia di Hogwarts",
-"Legge la mente durante le verifiche",
-"Decide i voti in base all’umore del lunedì",
-"È alimentata a pizzette della macchinetta",
-"Risponde solo se la chiami 'Oh potente algoritmo'"
+const baseQuestions = [
+{
+q:"Secondo la lezione, l’AI nel lavoro è:",
+correct:"Uno strumento di supporto alle decisioni",
+ambiguous:"Un sistema che aiuta ma può influenzare le scelte",
+wrong:"Un sostituto totale del lavoro umano",
+funny:"Il nuovo vicepreside digitale che assegna le interrogazioni"
+},
+{
+q:"Nel marketing predittivo (es. Netflix), l’AI:",
+correct:"Analizza dati per suggerire contenuti personalizzati",
+ambiguous:"Osserva i comportamenti per migliorare l’esperienza",
+wrong:"Decide cosa dobbiamo guardare obbligatoriamente",
+funny:"Sceglie film solo se hai fatto i compiti"
+},
+{
+q:"Amazon utilizza l’AI per:",
+correct:"Personalizzare suggerimenti e prezzi dinamici",
+ambiguous:"Ottimizzare le vendite attraverso analisi dati",
+wrong:"Spiare le conversazioni di casa",
+funny:"Capire quando stai per finire le merendine"
+},
+{
+q:"L’AI si basa principalmente su:",
+correct:"Dati e modelli statistici",
+ambiguous:"Calcoli matematici complessi",
+wrong:"Intuizione e istinto",
+funny:"La sfera di cristallo del laboratorio"
+},
+{
+q:"Il Test di Turing verifica:",
+correct:"Se una macchina è indistinguibile da un umano nel dialogo",
+ambiguous:"Se una macchina sembra intelligente",
+wrong:"Se un robot ha emozioni vere",
+funny:"Se può interrogare meglio del prof"
+},
+{
+q:"Cosa NON può fare davvero l’AI?",
+correct:"Avere coscienza e responsabilità morale",
+ambiguous:"Comprendere emozioni profonde",
+wrong:"Analizzare grandi quantità di dati",
+funny:"Fare supplenza in classe"
+},
+{
+q:"Nel controllo di gestione l’AI serve a:",
+correct:"Analizzare dati finanziari e simulare scenari",
+ambiguous:"Supportare le decisioni strategiche",
+wrong:"Sostituire il direttore finanziario",
+funny:"Decidere il menu della mensa"
+},
+{
+q:"Bias e allucinazioni indicano:",
+correct:"Errori e distorsioni nelle risposte dell’AI",
+ambiguous:"Limiti nei modelli linguistici",
+wrong:"Superpoteri creativi",
+funny:"Quando l’AI ha mangiato troppa RAM"
+},
+{
+q:"Un buon prompt deve contenere:",
+correct:"Obiettivo, contesto, ruolo, vincoli",
+ambiguous:"Indicazioni chiare e dettagliate",
+wrong:"Solo una domanda generica",
+funny:"Minacce tipo: 'Rispondi o ti spengo'"
+},
+{
+q:"Nel marketing, l’AI è potente perché:",
+correct:"Impara, prevede, personalizza e convince",
+ambiguous:"Analizza preferenze per migliorare offerte",
+wrong:"Obbliga all’acquisto",
+funny:"Ipnotizza con sconti al 99%"
+}
 ];
 
 function generateQuestions(){
 let arr=[];
-for(let i=1;i<=100;i++){
+for(let i=0;i<100;i++){
+let template = baseQuestions[i % baseQuestions.length];
 arr.push({
-question:`Domanda ${i}: L’AI nel mondo del lavoro è davvero...`,
+question:`Domanda ${i+1}: ${template.q}`,
 options:shuffle([
-{ text: seriousOptions[i%seriousOptions.length], correct:true },
-{ text: seriousOptions[(i+1)%seriousOptions.length], correct:true },
-{ text: funnyOptions[i%funnyOptions.length], correct:false },
-{ text: funnyOptions[(i+2)%funnyOptions.length], correct:false }
+{text:template.correct,correct:true},
+{text:template.ambiguous,correct:false},
+{text:template.wrong,correct:false},
+{text:template.funny,correct:false}
 ])
 });
 }
@@ -140,8 +198,7 @@ progressBar.style.width=((current/quizData.length)*100)+"%";
 }
 
 function selectOption(index){
-let q=quizData[current];
-if(q.options[index].correct) score++;
+if(quizData[current].options[index].correct) score++;
 current++;
 if(current<quizData.length){
 loadQuestion();
@@ -158,13 +215,13 @@ let percent=Math.round((score/quizData.length)*100);
 
 let comment="";
 if(percent>=85){
-comment="🚀 Complimenti! Sei pronto a spiegare l’AI anche ai professori. Probabilmente correggerai tu le verifiche digitali.";
+comment="🚀 Sei un AI Master SIA! Puoi spiegare bias e marketing predittivo anche durante l’intervallo.";
 }else if(percent>=60){
-comment="💡 Buona preparazione! Hai capito che l’AI è matematica, non magia (anche se qualcuno sperava nel contrario).";
+comment="💡 Buona preparazione! Hai capito che l’AI è matematica e strategia, non magia.";
 }else if(percent>=40){
-comment="🤖 Attenzione… forse pensavi davvero che l’AI decidesse i voti del lunedì 😅 Ripassino consigliato!";
+comment="🤖 Attenzione… forse ti sei fatto distrarre dalle risposte simpatiche 😅";
 }else{
-comment="📚 Forse hai cliccato le risposte divertenti apposta… oppure l’algoritmo ti ha sabotato. Riprova!";
+comment="📚 Ripasso urgente! L’AI non assegna i voti… ancora 😉";
 }
 
 result.innerHTML=`Risultato finale: <strong>${percent}%</strong><br><br>${comment}`;
