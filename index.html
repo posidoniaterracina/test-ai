@@ -1,234 +1,565 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI nel Lavoro - Test SIA Evoluto</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI nel Lavoro - Test SIA (50 domande)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:'Poppins',sans-serif;
-background:radial-gradient(circle at top,#0f2027,#203a43,#2c5364);
-color:#fff;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:20px;
-}
-.container{
-width:100%;
-max-width:900px;
-background:rgba(255,255,255,0.07);
-backdrop-filter:blur(20px);
-border-radius:25px;
-padding:40px;
-box-shadow:0 0 40px rgba(0,255,255,0.2);
-text-align:center;
-}
-h1{
-font-family:'Orbitron',sans-serif;
-margin-bottom:25px;
-background:linear-gradient(90deg,#00f5d4,#00bbf9);
--webkit-background-clip:text;
-color:transparent;
-}
-.progress{
-height:6px;
-background:rgba(255,255,255,0.15);
-border-radius:5px;
-overflow:hidden;
-margin-bottom:30px;
-}
-.progress-bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#00f5d4,#00bbf9);
-transition:0.3s;
-}
-.question{
-font-size:20px;
-margin-bottom:25px;
-min-height:60px;
-}
-.option{
-margin:10px 0;
-padding:14px;
-border-radius:12px;
-background:rgba(255,255,255,0.1);
-cursor:pointer;
-transition:0.3s;
-}
-.option:hover{
-background:rgba(0,255,255,0.2);
-transform:scale(1.05);
-}
-.result{
-margin-top:30px;
-font-size:22px;
-}
-</style>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:radial-gradient(circle at top,#0f2027,#203a43,#2c5364);
+      color:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container{
+      width:100%;
+      max-width:900px;
+      background:rgba(255,255,255,0.07);
+      backdrop-filter:blur(20px);
+      border-radius:25px;
+      padding:40px;
+      box-shadow:0 0 40px rgba(0,255,255,0.2);
+      text-align:center;
+    }
+    h1{
+      font-family:'Orbitron',sans-serif;
+      margin-bottom:25px;
+      background:linear-gradient(90deg,#00f5d4,#00bbf9);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .progress{
+      height:6px;
+      background:rgba(255,255,255,0.15);
+      border-radius:5px;
+      overflow:hidden;
+      margin-bottom:30px;
+    }
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#00f5d4,#00bbf9);
+      transition:0.3s;
+    }
+    .meta{
+      opacity:0.9;
+      font-size:14px;
+      margin:-10px 0 20px;
+    }
+    .question{
+      font-size:20px;
+      margin-bottom:25px;
+      min-height:70px;
+      line-height:1.35;
+    }
+    .option{
+      margin:10px 0;
+      padding:14px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.1);
+      cursor:pointer;
+      transition:0.3s;
+      user-select:none;
+    }
+    .option:hover{
+      background:rgba(0,255,255,0.2);
+      transform:scale(1.03);
+    }
+    .result{
+      margin-top:30px;
+      font-size:22px;
+      line-height:1.35;
+    }
+    .small{
+      font-size:14px;
+      opacity:0.85;
+      margin-top:10px;
+    }
+    .btn{
+      margin-top:18px;
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.12);
+      cursor:pointer;
+      transition:0.25s;
+    }
+    .btn:hover{
+      background:rgba(0,255,255,0.22);
+      transform:scale(1.03);
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-<h1>AI nel Mondo del Lavoro - Test SIA</h1>
+  <div class="container">
+    <h1>AI nel Mondo del Lavoro - Test SIA</h1>
+    <div class="meta">50 domande • 1 risposta corretta • 3 trappole (una è simpatica 😄)</div>
 
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
-</div>
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-<div id="quiz"></div>
-<div id="result" class="result"></div>
-</div>
+    <div id="quiz"></div>
+    <div id="result" class="result"></div>
+  </div>
 
 <script>
+  function shuffle(array){
+    // Fisher–Yates (no "sort random" per evitare bias)
+    for(let i=array.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [array[i],array[j]]=[array[j],array[i]];
+    }
+    return array;
+  }
 
-const baseQuestions = [
-{
-q:"Secondo la lezione, l’AI nel lavoro è:",
-correct:"Uno strumento di supporto alle decisioni",
-ambiguous:"Un sistema che aiuta ma può influenzare le scelte",
-wrong:"Un sostituto totale del lavoro umano",
-funny:"Il nuovo vicepreside digitale che assegna le interrogazioni"
-},
-{
-q:"Nel marketing predittivo (es. Netflix), l’AI:",
-correct:"Analizza dati per suggerire contenuti personalizzati",
-ambiguous:"Osserva i comportamenti per migliorare l’esperienza",
-wrong:"Decide cosa dobbiamo guardare obbligatoriamente",
-funny:"Sceglie film solo se hai fatto i compiti"
-},
-{
-q:"Amazon utilizza l’AI per:",
-correct:"Personalizzare suggerimenti e prezzi dinamici",
-ambiguous:"Ottimizzare le vendite attraverso analisi dati",
-wrong:"Spiare le conversazioni di casa",
-funny:"Capire quando stai per finire le merendine"
-},
-{
-q:"L’AI si basa principalmente su:",
-correct:"Dati e modelli statistici",
-ambiguous:"Calcoli matematici complessi",
-wrong:"Intuizione e istinto",
-funny:"La sfera di cristallo del laboratorio"
-},
-{
-q:"Il Test di Turing verifica:",
-correct:"Se una macchina è indistinguibile da un umano nel dialogo",
-ambiguous:"Se una macchina sembra intelligente",
-wrong:"Se un robot ha emozioni vere",
-funny:"Se può interrogare meglio del prof"
-},
-{
-q:"Cosa NON può fare davvero l’AI?",
-correct:"Avere coscienza e responsabilità morale",
-ambiguous:"Comprendere emozioni profonde",
-wrong:"Analizzare grandi quantità di dati",
-funny:"Fare supplenza in classe"
-},
-{
-q:"Nel controllo di gestione l’AI serve a:",
-correct:"Analizzare dati finanziari e simulare scenari",
-ambiguous:"Supportare le decisioni strategiche",
-wrong:"Sostituire il direttore finanziario",
-funny:"Decidere il menu della mensa"
-},
-{
-q:"Bias e allucinazioni indicano:",
-correct:"Errori e distorsioni nelle risposte dell’AI",
-ambiguous:"Limiti nei modelli linguistici",
-wrong:"Superpoteri creativi",
-funny:"Quando l’AI ha mangiato troppa RAM"
-},
-{
-q:"Un buon prompt deve contenere:",
-correct:"Obiettivo, contesto, ruolo, vincoli",
-ambiguous:"Indicazioni chiare e dettagliate",
-wrong:"Solo una domanda generica",
-funny:"Minacce tipo: 'Rispondi o ti spengo'"
-},
-{
-q:"Nel marketing, l’AI è potente perché:",
-correct:"Impara, prevede, personalizza e convince",
-ambiguous:"Analizza preferenze per migliorare offerte",
-wrong:"Obbliga all’acquisto",
-funny:"Ipnotizza con sconti al 99%"
-}
-];
+  const questions = [
+    {
+      q:"Secondo il corso, l’AI nel lavoro va vista soprattutto come…",
+      correct:"Supporto alle decisioni, non sostituto totale dell’umano",
+      ambiguous:"Un aiuto operativo che va governato con regole",
+      wrong:"Un rimpiazzo definitivo di qualunque professione",
+      funny:"Il collega che prende ferie al posto tuo"
+    },
+    {
+      q:"Nel marketing e comunicazione, l’AI viene usata prima di tutto per…",
+      correct:"Analisi dati e targeting, per messaggi più mirati",
+      ambiguous:"Automatizzare parte delle attività ripetitive",
+      wrong:"Inventare clienti dal nulla senza dati",
+      funny:"Scrivere slogan alle 3 di notte con energy drink"
+    },
+    {
+      q:"Quando diciamo “non è magia, è matematica”, nel contesto delle lezioni significa che…",
+      correct:"Dati + algoritmo = contenuti/decisioni personalizzate",
+      ambiguous:"Serve logica e misurazione, non solo creatività",
+      wrong:"Basta credere forte e il modello capisce tutto",
+      funny:"Se fai il segno della croce, l’algoritmo converge"
+    },
+    {
+      q:"Netflix, come esempio di marketing predittivo, si basa soprattutto su…",
+      correct:"Analisi di scelte e comportamento per suggerire cosa guardare dopo",
+      ambiguous:"Osservazione continua dei pattern per migliorare l’esperienza",
+      wrong:"Decisioni casuali per sorprendere gli utenti",
+      funny:"Un indovino che legge i pop-corn rimasti nella ciotola"
+    },
+    {
+      q:"La frase “Netflix non vende film. Vende tempo di permanenza” in pratica richiama…",
+      correct:"L’obiettivo di massimizzare engagement e retention con raccomandazioni",
+      ambiguous:"L’ottimizzazione dell’esperienza come leva di business",
+      wrong:"La vendita di abbonamenti solo tramite trailer",
+      funny:"Il culto del “solo un altro episodio”"
+    },
+    {
+      q:"Amazon, nella lezione, viene sintetizzato come piattaforma che…",
+      correct:"Non vende solo prodotti: orienta decisioni tramite dati e algoritmo",
+      ambiguous:"Usa analisi per migliorare conversioni e ricavi",
+      wrong:"Indovina i desideri senza tracciare nulla",
+      funny:"Ti conosce meglio di tua madre (e te lo fa notare)"
+    },
+    {
+      q:"Tra gli esempi citati su Amazon c’è il concetto di…",
+      correct:"Dynamic pricing (prezzi che cambiano in base a dati e contesto)",
+      ambiguous:"Ottimizzazione dell’offerta in base alla domanda",
+      wrong:"Prezzi fissi per sempre, tipo anni ’90",
+      funny:"Prezzi che cambiano se ti vede indeciso: “E mo’ pago!”"
+    },
+    {
+      q:"Il “carrello abbandonato” in ottica AI/marketing è collegato a…",
+      correct:"Recupero conversioni con reminder e offerte personalizzate",
+      ambiguous:"Trigger automatici basati sul comportamento",
+      wrong:"Bloccare l’utente finché non compra",
+      funny:"Un messaggio: “Ti manca… il coraggio 😏”"
+    },
+    {
+      q:"Nel controllo di gestione, l’AI aiuta soprattutto a…",
+      correct:"Analizzare dati finanziari, individuare trend/anomalie e simulare scenari",
+      ambiguous:"Supportare decisioni strategiche con report e indicatori",
+      wrong:"Fare il CFO al posto del CFO",
+      funny:"Decidere il budget in base all’oroscopo"
+    },
+    {
+      q:"Quando l’AI individua “anomalie” nei dati di gestione, di solito sta…",
+      correct:"Segnalando scostamenti insoliti da pattern attesi",
+      ambiguous:"Evidenziando punti da verificare e interpretare",
+      wrong:"Dimostrando che i dati sono inutili",
+      funny:"Urlando: “Sospetto! Qui qualcuno ha comprato troppe graffette!”"
+    },
+    {
+      q:"Nell’organizzazione aziendale e nei processi decisionali, l’AI può…",
+      correct:"Ottimizzare processi, condividere informazioni, valutare scenari/opzioni",
+      ambiguous:"Ridurre tempi di analisi e migliorare la qualità dei report",
+      wrong:"Sostituire tutte le riunioni per decreto",
+      funny:"Creare un “MeetingGPT” che parla al posto di tutti"
+    },
+    {
+      q:"Quando si parla di “strategie migliori” grazie all’AI, nelle lezioni si intende…",
+      correct:"Valutare scenari e opzioni per scegliere con più dati e meno istinto",
+      ambiguous:"Rendere le decisioni più informate e replicabili",
+      wrong:"Fare sempre la scelta più comoda",
+      funny:"Scegliere sempre la strategia “pizza e via”"
+    },
+    {
+      q:"Nei sistemi informativi aziendali, l’AI è collegata (anche) a…",
+      correct:"Cybersecurity e gestione intelligente degli accessi",
+      ambiguous:"Analisi e interpretazione di grandi volumi di dati",
+      wrong:"Ignorare le minacce finché non succede niente",
+      funny:"Una password unica per tutti: “1234AI”"
+    },
+    {
+      q:"“Accesso intelligente” in ambito SIA significa tipicamente…",
+      correct:"Gestire accessi e sicurezza in modo più efficace (regole + segnali + rischio)",
+      ambiguous:"Automatizzare controlli, mantenendo governance umana",
+      wrong:"Dare accesso admin a chiunque chieda gentilmente",
+      funny:"Se sorridi alla webcam, sei già dentro"
+    },
+    {
+      q:"Secondo le lezioni, tre grandi svolte per l’umanità includono…",
+      correct:"Fuoco, elettricità, intelligenza artificiale",
+      ambiguous:"Tecnologie che amplificano capacità umane",
+      wrong:"Ruota, forchetta, telecomando",
+      funny:"Wi-Fi, Wi-Fi più forte, Wi-Fi che non cade mai"
+    },
+    {
+      q:"Nel materiale, l’AI viene descritta come…",
+      correct:"Un algoritmo che crea modelli statistici per generare soluzioni",
+      ambiguous:"Un sistema che apprende da dati e produce previsioni/azioni",
+      wrong:"Un’entità cosciente con morale propria",
+      funny:"Una creatura digitale che fa “bip” quando pensa"
+    },
+    {
+      q:"Cosa distingue l’intelligenza umana (secondo la lezione) rispetto a un’AI?",
+      correct:"Coscienza, intelligenza emotiva e intelligenza sociale",
+      ambiguous:"Comprensione del contesto e responsabilità personale",
+      wrong:"Più RAM e più GPU",
+      funny:"La capacità di capire le battute del prof al primo colpo"
+    },
+    {
+      q:"Il Test di Turing è citato per ragionare su…",
+      correct:"Quando una macchina appare indistinguibile da un umano nel dialogo",
+      ambiguous:"La percezione di “intelligenza” in un’interazione",
+      wrong:"La presenza di emozioni vere nei robot",
+      funny:"Se può interrogare meglio del docente… aiuto"
+    },
+    {
+      q:"Il passaggio “dalla programmazione di tutte le ipotesi possibili” a “apprendimento autonomo” indica…",
+      correct:"Lo spostamento da regole rigide a modelli che imparano dai dati",
+      ambiguous:"Meno “if/else”, più generalizzazione statistica",
+      wrong:"Che non serve più progettare nulla",
+      funny:"Che il computer “fa da solo” e poi chiede la paghetta"
+    },
+    {
+      q:"Dove “incontriamo” l’AI, secondo la slide?",
+      correct:"Smartphone, social, scuola, lavoro",
+      ambiguous:"In molti strumenti digitali quotidiani",
+      wrong:"Solo nei laboratori segreti",
+      funny:"Nel frigo: ti giudica quando apri per la quinta volta"
+    },
+    {
+      q:"I punti importanti di un prompt, secondo la lezione, includono…",
+      correct:"Obiettivo, contesto, ruolo, vincoli, esempi",
+      ambiguous:"Indicazioni chiare e criteri misurabili",
+      wrong:"Una frase generica tipo “fai tu”",
+      funny:"“Rispondi bene o ti spengo” (spoiler: non funziona)"
+    },
+    {
+      q:"Valutazione della risposta: il corso suggerisce di…",
+      correct:"Verificare con spirito critico e confrontare con altre fonti",
+      ambiguous:"Controllare coerenza, dati e assunzioni",
+      wrong:"Credere sempre e comunque all’AI",
+      funny:"Stampare la risposta e incorniciarla in salotto"
+    },
+    {
+      q:"Bias e allucinazioni, nel corso, richiamano…",
+      correct:"Distorsioni e errori possibili nelle risposte/modelli",
+      ambiguous:"Limiti che richiedono verifica e controllo umano",
+      wrong:"Superpoteri creativi ufficiali",
+      funny:"Quando l’AI ha “mangiato troppa RAM”"
+    },
+    {
+      q:"Nell’AI applicata al marketing, le tre parole-chiave “Analisi, Automazione, Generazione contenuti” significano…",
+      correct:"Leggere dati, automatizzare task e creare contenuti su richiesta",
+      ambiguous:"Ridurre tempi e aumentare coerenza nella comunicazione",
+      wrong:"Eliminare del tutto la strategia",
+      funny:"Produrre 300 post al minuto e poi “ops”"
+    },
+    {
+      q:"Quando si parla di “chi controlla le nostre scelte?”, nel materiale si fa riferimento a…",
+      correct:"Piattaforme che usano algoritmi per influenzare attenzione e decisioni",
+      ambiguous:"Personalizzazione che può diventare persuasione",
+      wrong:"Un complotto di gattini digitali",
+      funny:"Il pulsante “Compra ora” che ti fissa negli occhi"
+    },
+    {
+      q:"“L’AI è potente nel marketing perché…” (slide) completa correttamente con…",
+      correct:"Impara, prevede, personalizza, convince",
+      ambiguous:"Sfrutta pattern per ottimizzare messaggi e timing",
+      wrong:"Obbliga all’acquisto senza consenso",
+      funny:"Ipnotizza con sconti al 99% e fanfare"
+    },
+    {
+      q:"Esempio pratico: se un e-commerce usa AI per “prevedere” cosa comprerai, sta facendo…",
+      correct:"Predictive analytics basata su comportamenti e storico",
+      ambiguous:"Segmentazione avanzata con modelli statistici",
+      wrong:"Telepatia commerciale",
+      funny:"“Compra le pile: lo so che ti servono”"
+    },
+    {
+      q:"Qual è un rischio tipico della personalizzazione estrema?",
+      correct:"Filtro che limita alternative e influenza scelte (effetto bolla)",
+      ambiguous:"Riduzione della varietà percepita",
+      wrong:"Aumento automatico della libertà",
+      funny:"Ti propone sempre calzini… anche per il compleanno"
+    },
+    {
+      q:"Quando l’AI “convince” nel marketing, spesso lo fa tramite…",
+      correct:"Offerte su misura, timing, messaggi persuasivi basati sui dati",
+      ambiguous:"Ottimizzazione del funnel e dei trigger",
+      wrong:"Ricatti emotivi certificati",
+      funny:"“Se non compri, lo dico al tuo algoritmo preferito”"
+    },
+    {
+      q:"Nel contesto della lezione, “dati” (per personalizzazione) includono esempi come…",
+      correct:"Click, tempo, ricerche e comportamenti di navigazione",
+      ambiguous:"Interazioni e preferenze espresse/implicite",
+      wrong:"Solo nome e cognome, il resto non serve",
+      funny:"Il numero di volte che hai detto “non compro”"
+    },
+    {
+      q:"Nel controllo di gestione, simulare scenari con l’AI serve a…",
+      correct:"Valutare impatti di decisioni (costi/ricavi/rischi) prima di agire",
+      ambiguous:"Supportare budget e forecast",
+      wrong:"Evitare di prendere decisioni",
+      funny:"Simulare “se salto la riunione, cosa succede?”"
+    },
+    {
+      q:"In cybersecurity, un uso sensato dell’AI è…",
+      correct:"Rilevare anomalie e pattern di attacco più velocemente",
+      ambiguous:"Supportare analisti con alert e priorità",
+      wrong:"Spegnere internet quando c’è pericolo",
+      funny:"Mettere un cartello: “Hacker, oggi chiuso”"
+    },
+    {
+      q:"Che cosa NON può fare davvero l’AI, secondo le slide?",
+      correct:"Avere etica/coscienza propria e responsabilità morale",
+      ambiguous:"Comprendere emozioni profonde come un umano",
+      wrong:"Analizzare grandi quantità di dati",
+      funny:"Fare supplenza in classe (ancora)"
+    },
+    {
+      q:"La triade “Creatività autentica, Etica, Visione” (slide) indica che l’AI…",
+      correct:"Ha limiti strutturali: non sostituisce pienamente queste dimensioni umane",
+      ambiguous:"Può imitare, ma non garantire autenticità e responsabilità",
+      wrong:"È superiore agli umani in tutto",
+      funny:"Ha un’anima… ma la vende su Amazon Prime"
+    },
+    {
+      q:"Secondo Voltaire (citazione in slide), dovremmo giudicare una persona…",
+      correct:"Dalle sue domande, non dalle sue risposte",
+      ambiguous:"Dalla curiosità e capacità critica",
+      wrong:"Da quante risposte dà in un minuto",
+      funny:"Da quante emoji usa nelle email"
+    },
+    {
+      q:"In ottica “spirito critico”, cosa fai se una risposta AI sembra perfetta ma non cita fonti?",
+      correct:"Verifichi e confronti con altre fonti affidabili",
+      ambiguous:"Chiedi all’AI di esplicitare assunzioni e dati",
+      wrong:"La mandi subito in produzione",
+      funny:"La stampi e la usi come scusa con il prof"
+    },
+    {
+      q:"Nella metafora della lezione (Mary Shelley), la “creatura che impara” richiama…",
+      correct:"Un sistema che apprende per esposizione e osservazione, ma senza coscienza",
+      ambiguous:"L’idea di apprendimento progressivo da input",
+      wrong:"Un essere umano intrappolato nel computer",
+      funny:"Un mostro che studia di notte e ti ruba gli appunti"
+    },
+    {
+      q:"Collegamento a Frankenstein: il messaggio “l’uomo crea una creatura e non prevede le conseguenze” parla di…",
+      correct:"Responsabilità e governance: capire impatti e limiti prima di usare l’AI",
+      ambiguous:"Rischi etici e sociali dell’innovazione",
+      wrong:"Che la tecnologia è sempre cattiva",
+      funny:"Che bisogna leggere i manuali… prima di premere ‘Deploy’"
+    },
+    {
+      q:"Anno senza estate (1816) + Mary Shelley: perché citarlo in un corso sull’AI nel lavoro?",
+      correct:"Per ricordare che contesto storico e conseguenze impreviste contano anche nelle innovazioni",
+      ambiguous:"Per collegare narrazione/immaginario ai temi di responsabilità tecnologica",
+      wrong:"Perché l’AI controlla il meteo",
+      funny:"Perché anche il clima aveva bisogno di un aggiornamento firmware"
+    },
+    {
+      q:"Nel marketing, “raccontare un valore” (definizione in slide) significa…",
+      correct:"Creare narrazione e connessioni che trasformano una transazione in relazione",
+      ambiguous:"Dare senso e continuità al rapporto con il cliente",
+      wrong:"Dire solo “compra!” più forte",
+      funny:"Scrivere poesie sulle offerte del 2x1"
+    },
+    {
+      q:"Quando un algoritmo “personalizza”, la cosa più corretta da dire è che…",
+      correct:"Adatta contenuti/offerte in base a segnali e dati dell’utente",
+      ambiguous:"Riduce rumore mostrando ciò che è più probabile interessi",
+      wrong:"Legge la mente",
+      funny:"Ti osserva mentre scegli i biscotti (con aria di giudizio)"
+    },
+    {
+      q:"Se un’azienda usa AI per “condividere informazioni” più rapidamente, sta lavorando su…",
+      correct:"Reportistica e analisi tempestive nei processi decisionali",
+      ambiguous:"Riduzione dei colli di bottiglia informativi",
+      wrong:"Eliminazione dei dati (così non c’è confusione)",
+      funny:"Mandare memo in formato “meme” obbligatorio"
+    },
+    {
+      q:"Nel contesto del corso, un esempio di “automatizzare” nel lavoro è…",
+      correct:"Ridurre task ripetitivi (report, classificazioni, risposte standard) con controllo umano",
+      ambiguous:"Creare workflow che liberano tempo per attività a valore",
+      wrong:"Premere un bottone e licenziare tutti",
+      funny:"Automatizzare anche il caffè: “espresso as a service”"
+    },
+    {
+      q:"Quale scelta descrive meglio una buona “governance” dell’AI in azienda?",
+      correct:"Regole, verifiche, responsabilità chiare e uso consapevole dei dati",
+      ambiguous:"Processi di controllo e revisione delle decisioni automatizzate",
+      wrong:"Lasciare fare all’algoritmo perché “è oggettivo”",
+      funny:"Eleggere l’AI come CEO e andare al mare"
+    },
+    {
+      q:"Quando un modello produce un’affermazione inventata ma plausibile, nel lessico del corso è…",
+      correct:"Un’allucinazione: va verificata e corretta",
+      ambiguous:"Un errore che richiede confronto con fonti",
+      wrong:"Una verità alternativa accettabile",
+      funny:"Fanfiction aziendale in tempo reale"
+    },
+    {
+      q:"Bias nei dati: qual è l’effetto più probabile su un sistema AI usato per selezione/targeting?",
+      correct:"Decisioni distorte perché il modello impara distorsioni presenti nei dati",
+      ambiguous:"Risultati meno equi o meno accurati per alcuni gruppi",
+      wrong:"Decisioni sempre neutrali e giuste",
+      funny:"Sceglie sempre chi ha il cognome più simpatico"
+    },
+    {
+      q:"Un prompt “ben fatto” migliora la qualità perché…",
+      correct:"Riduce ambiguità e impone vincoli/contesto utili al modello",
+      ambiguous:"Guida lo stile e il livello di dettaglio atteso",
+      wrong:"Costringe il modello a dire sempre sì",
+      funny:"È come dare le istruzioni a un alieno… ma con gentilezza"
+    },
+    {
+      q:"Esempio: vuoi usare AI per una campagna. Qual è la richiesta più corretta secondo i “punti del prompt”?",
+      correct:"Definire obiettivo, pubblico, tono, vincoli e fornire esempi di output",
+      ambiguous:"Dare indicazioni chiare e misurabili",
+      wrong:"Scrivere: “fammi una campagna virale”",
+      funny:"“Fammi una campagna che spacca, tipo boom 💥”"
+    },
+    {
+      q:"Nel corso si suggerisce che l’AI “influenza le scelte”. Cosa significa in pratica?",
+      correct:"Ranking, raccomandazioni e messaggi spostano attenzione e probabilità di azione",
+      ambiguous:"La personalizzazione modifica il percorso decisionale",
+      wrong:"L’AI controlla fisicamente le mani",
+      funny:"Ti prende il mouse e clicca “Compra ora” da sola"
+    },
+    {
+      q:"Quale combinazione descrive meglio il flusso base del marketing data-driven mostrato in slide?",
+      correct:"Tu → dati (click/tempo/ricerche) → algoritmo → contenuto personalizzato",
+      ambiguous:"Raccolta segnali → modellazione → output mirato",
+      wrong:"Intuizione → fortuna → vendite",
+      funny:"Ansia → refresh carrello → ordine impulsivo"
+    },
+    {
+      q:"Se una piattaforma ti mostra sempre le stesse categorie perché “funzionano”, quale rischio aumenta?",
+      correct:"Riduzione dell’esplorazione e aumento dell’effetto bolla",
+      ambiguous:"Meno varietà e meno scoperta",
+      wrong:"Più libertà di scelta",
+      funny:"Diventi “monogamo” con i documentari sugli squali"
+    },
+    {
+      q:"Ultima: se l’AI è potente, chi decide davvero come usarla (messaggio finale del corso)?",
+      correct:"Tu: l’umano resta responsabile delle scelte e delle verifiche",
+      ambiguous:"L’organizzazione con regole e responsabilità",
+      wrong:"Il modello, perché “sa tutto”",
+      funny:"Il router Wi-Fi: se cade, finisce la civiltà"
+    }
+  ];
 
-function generateQuestions(){
-let arr=[];
-for(let i=0;i<100;i++){
-let template = baseQuestions[i % baseQuestions.length];
-arr.push({
-question:`Domanda ${i+1}: ${template.q}`,
-options:shuffle([
-{text:template.correct,correct:true},
-{text:template.ambiguous,correct:false},
-{text:template.wrong,correct:false},
-{text:template.funny,correct:false}
-])
-});
-}
-return arr;
-}
+  // Converti in struttura quizData con opzioni mescolate
+  const quizData = questions.map((item, idx) => ({
+    question: `Domanda ${idx+1}/50: ${item.q}`,
+    options: shuffle([
+      { text: item.correct, correct: true },
+      { text: item.ambiguous, correct: false },
+      { text: item.wrong, correct: false },
+      { text: item.funny, correct: false }
+    ])
+  }));
 
-function shuffle(array){
-return array.sort(()=>Math.random()-0.5);
-}
+  let current = 0;
+  let score = 0;
 
-const quizData = generateQuestions();
-let current=0;
-let score=0;
+  const quiz = document.getElementById("quiz");
+  const result = document.getElementById("result");
+  const progressBar = document.getElementById("progressBar");
 
-const quiz=document.getElementById("quiz");
-const result=document.getElementById("result");
-const progressBar=document.getElementById("progressBar");
+  function loadQuestion(){
+    const q = quizData[current];
+    quiz.innerHTML =
+      `<div class="question">${q.question}</div>` +
+      q.options.map((opt,i)=>
+        `<div class="option" onclick="selectOption(${i})">${opt.text}</div>`
+      ).join("");
 
-function loadQuestion(){
-let q=quizData[current];
-quiz.innerHTML=`<div class="question">${q.question}</div>`+
-q.options.map((opt,i)=>
-`<div class="option" onclick="selectOption(${i})">${opt.text}</div>`
-).join("");
-progressBar.style.width=((current/quizData.length)*100)+"%";
-}
+    progressBar.style.width = ((current / quizData.length) * 100) + "%";
+    result.innerHTML = "";
+  }
 
-function selectOption(index){
-if(quizData[current].options[index].correct) score++;
-current++;
-if(current<quizData.length){
-loadQuestion();
-}else{
-showResult();
-}
-}
+  function selectOption(index){
+    if(quizData[current].options[index].correct) score++;
+    current++;
+    if(current < quizData.length){
+      loadQuestion();
+    } else {
+      showResult();
+    }
+  }
 
-function showResult(){
-quiz.innerHTML="";
-progressBar.style.width="100%";
+  function showResult(){
+    quiz.innerHTML = "";
+    progressBar.style.width = "100%";
 
-let percent=Math.round((score/quizData.length)*100);
+    const percent = Math.round((score / quizData.length) * 100);
 
-let comment="";
-if(percent>=85){
-comment="🚀 Sei un AI Master SIA! Puoi spiegare bias e marketing predittivo anche durante l’intervallo.";
-}else if(percent>=60){
-comment="💡 Buona preparazione! Hai capito che l’AI è matematica e strategia, non magia.";
-}else if(percent>=40){
-comment="🤖 Attenzione… forse ti sei fatto distrarre dalle risposte simpatiche 😅";
-}else{
-comment="📚 Ripasso urgente! L’AI non assegna i voti… ancora 😉";
-}
+    let comment = "";
+    if(percent >= 90){
+      comment = "🚀 Sei un AI Master SIA! Se qualcuno dice “è magia”, tu rispondi “no: dati + algoritmo”.";
+    } else if(percent >= 70){
+      comment = "💡 Ottimo! Sai usare l’AI come supporto (e non come bacchetta magica).";
+    } else if(percent >= 50){
+      comment = "🤖 Buon livello, ma occhio a bias e allucinazioni: verifica sempre!";
+    } else {
+      comment = "📚 Ripasso consigliato! Anche Frankenstein ha imparato… ma con calma 😄";
+    }
 
-result.innerHTML=`Risultato finale: <strong>${percent}%</strong><br><br>${comment}`;
-}
+    result.innerHTML =
+      `Risultato finale: <strong>${percent}%</strong><br><br>${comment}` +
+      `<div class="small">Punteggio: ${score} / ${quizData.length}</div>` +
+      `<div class="btn" onclick="restart()">Ricomincia (e stavolta niente risposte simpatiche 👀)</div>`;
+  }
 
-loadQuestion();
+  function restart(){
+    current = 0;
+    score = 0;
+    shuffle(quizData); // rimescola anche l’ordine delle domande
+    quizData.forEach(q => shuffle(q.options)); // e delle opzioni
+    loadQuestion();
+  }
 
+  loadQuestion();
 </script>
 </body>
 </html>
